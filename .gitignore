@@ -1,21 +1,6 @@
-# Node modules
 node_modules/
-
-# Env files
 .env
 .env.*
-.env.local
-
-# Logs
-logs
-*.log
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Build folders
-dist/
 .next/
-out/
+dist/
 build/
