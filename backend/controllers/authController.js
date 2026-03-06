@@ -55,10 +55,19 @@ exports.loginUser = async (req, res) => {
         })
      }
      const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET , { expiresIn : "1d"})
-     res.status(200).json({
+     const userData = user.toObject();
+     delete userData.password;
+     res.cookie("token", token, {
+        httpOnly : true,
+        secure : process.env.NODE_ENV === "production",
+        sameSite : "strict",
+        maxAge : 24*60*60*1000
+     }).status(200).json({
         message : "Login successful",
-        token
-     })   
+        token,
+        user: userData
+     })
+      
     } catch (error) {
         res.status(500).json({
             message : "Login failed",
@@ -66,4 +75,12 @@ exports.loginUser = async (req, res) => {
         })
         
     }
+}
+
+exports.logoutUser = (req,res) => {
+    res.clearCookie("token").status(200).json({
+        success : true,
+        message : "Logout successful"
+        
+    })
 }
